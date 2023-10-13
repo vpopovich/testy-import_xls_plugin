@@ -37,7 +37,7 @@ class ExamplePluginConfig(TestyPluginConfig):
     description = 'It is very simple plugin example'
     version = '0.1.0'
     plugin_base_url = 'plugin-example'
-    index_reverse_name = 'upload-file'
+    index_reverse_name = 'index'
 
 
 config = ExamplePluginConfig
