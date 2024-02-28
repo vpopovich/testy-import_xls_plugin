@@ -1,5 +1,5 @@
 # TestY TMS - Test Management System
-# Copyright (C) 2023 KNS Group LLC (YADRO)
+# Copyright (C) 2024 KNS Group LLC (YADRO)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -28,14 +28,14 @@
 # if any, to sign a "copyright disclaimer" for the program, if necessary.
 # For more information on this, and how to apply and follow the GNU AGPL, see
 # <http://www.gnu.org/licenses/>.
-from core.models import Project
+from testy.core.models import Project
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import ListView
 from rest_framework.generics import CreateAPIView
 from rest_framework.serializers import Serializer
 
-from .xlsx_parser_lib.xlsx_parser import XlsxParser
+from plugin_example.xlsx_parser_lib.xlsx_parser import XlsxParser
 
 
 class ProjectListView(ListView):
