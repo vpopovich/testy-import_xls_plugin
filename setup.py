@@ -32,7 +32,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='plugin-example',
-    version='0.2',
+    version='0.2.0',
     description='Example of testy plugin',
     install_requires=['openpyxl==3.1.1'],
     packages=find_packages(),
