@@ -40,7 +40,7 @@ urlpatterns = [
     path(
         'upload-file/',
         login_required(views.UploadFileApiView.as_view()),
-        name='upload-file'
+        name='upload-file',
     ),
 ]
 urlpatterns += router.urls
