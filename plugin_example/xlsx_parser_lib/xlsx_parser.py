@@ -52,7 +52,7 @@ class XlsxParser:
                 suite_cell, case_cell, scenario_cell = row
             except ValueError:
                 raise InvalidXlsx(
-                    f'Too many values in line: expected 3, got {len(row)}'
+                    f'Too many values in line: expected 3, got {len(row)}',
                 )
 
             if not suite_cell.value and not tmp_suite:
@@ -61,9 +61,8 @@ class XlsxParser:
             if suite_cell.value:
                 tmp_suite = TestSuite.objects.create(
                     project_id=self.project_id,
-                    name=suite_cell.value
+                    name=suite_cell.value,
                 )
-                TestSuite.objects.partial_rebuild(tmp_suite.tree_id)
                 suites_counter += 1
 
             if not case_cell.value or not scenario_cell.value:
@@ -74,8 +73,8 @@ class XlsxParser:
                     project_id=self.project_id,
                     suite=tmp_suite,
                     scenario=scenario_cell.value,
-                    name=case_cell.value
-                )
+                    name=case_cell.value,
+                ),
             )
 
         bulk_create_with_history(cases, TestCase)

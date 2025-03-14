@@ -55,10 +55,12 @@ class UploadFileApiView(CreateAPIView):
         parser = XlsxParser(file, project.id)
         try:
             suites_count, cases_count = parser.create_suites_with_cases()
-            response_text = (f'{suites_count} created suites, '
-                             f'{cases_count} created cases')
+            response_text = (
+                f'{suites_count} created suites, '
+                f'{cases_count} created cases'
+            )
         except Exception as ex:
             response_text = f'An error occurred: {ex}'
 
-        request.session["response"] = response_text
+        request.session['response'] = response_text
         return redirect(reverse('plugins:plugin_example:index'))
