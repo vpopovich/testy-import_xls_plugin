@@ -47,33 +47,55 @@ class XlsxParser:
         cases = []
         suites_counter = 0
         tmp_suite = None
+
         for idx, row in enumerate(self.ws.iter_rows(), 1):
             try:
-                suite_cell, case_cell, scenario_cell = row
+                (
+                    suite_cell,
+                    case_name_cell,
+                    precondition_cell,
+                    scenario_cell,
+                    expected_cell,
+                    estimate_cell,
+                ) = row
             except ValueError:
                 raise InvalidXlsx(
-                    f'Too many values in line: expected 3, got {len(row)}',
+                    f"Too many values in line: expected 6, got {len(row)}",
                 )
 
             if not suite_cell.value and not tmp_suite:
-                raise InvalidXlsx('Empty suite')
+                raise InvalidXlsx("Empty suite")
 
             if suite_cell.value:
                 tmp_suite = TestSuite.objects.create(
                     project_id=self.project_id,
-                    name=suite_cell.value,
+                    name=str(suite_cell.value).strip(),
                 )
                 suites_counter += 1
 
-            if not case_cell.value or not scenario_cell.value:
-                raise InvalidXlsx(f'Got empty suite or scenario in line {idx}')
+            if not case_name_cell.value or not scenario_cell.value or not expected_cell.value:
+                raise InvalidXlsx(
+                    f"Got empty case name, scenario or expected result in line {idx}",
+                )
+
+            estimate = None
+            if estimate_cell.value not in (None, ""):
+                try:
+                    estimate = int(estimate_cell.value)
+                except (TypeError, ValueError):
+                    raise InvalidXlsx(
+                        f"Invalid estimate value in line {idx}: {estimate_cell.value}",
+                    )
 
             cases.append(
                 TestCase(
                     project_id=self.project_id,
                     suite=tmp_suite,
-                    scenario=scenario_cell.value,
-                    name=case_cell.value,
+                    name=str(case_name_cell.value).strip(),
+                    setup=str(precondition_cell.value).strip() if precondition_cell.value else "",
+                    scenario=str(scenario_cell.value).strip(),
+                    expected=str(expected_cell.value).strip(),
+                    estimate=estimate,
                 ),
             )
 
